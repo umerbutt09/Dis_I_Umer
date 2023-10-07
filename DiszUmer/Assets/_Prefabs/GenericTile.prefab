@@ -305,12 +305,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 200
+  m_fontSize: 130
   m_fontSizeBase: 200
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 130
+  m_fontSizeMax: 200
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -510,6 +510,7 @@ GameObject:
   - component: {fileID: 8069085404945359268}
   - component: {fileID: 8749564056401912092}
   - component: {fileID: 9080866796902472711}
+  - component: {fileID: -5407642710564947115}
   m_Layer: 5
   m_Name: GenericTile
   m_TagString: Untagged
@@ -589,7 +590,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileValueText: {fileID: 5510199933509275368}
-  TileValue: 0
   TileAnimator: {fileID: 9080866796902472711}
   QuestionMark: {fileID: 557151805552541356}
   TileSelected: 0
@@ -615,3 +615,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!225 &-5407642710564947115
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8513152986910628932}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

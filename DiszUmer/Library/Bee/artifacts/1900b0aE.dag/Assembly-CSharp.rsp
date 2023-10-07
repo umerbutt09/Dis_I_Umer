@@ -350,6 +350,8 @@
 "Assets/Scripts/GridManager.cs"
 "Assets/Scripts/TileButton.cs"
 "Assets/Scripts/TilesData.cs"
+"Assets/Slot.cs"
+"Assets/SlotManager.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark02.cs"

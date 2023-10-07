@@ -11,7 +11,9 @@ public class GridManager : MonoBehaviour
     [Header ("Card Tile Prefab")]
     public GameObject TileContent;
 
-    float CellDimension = 0f;
+    //NO-SPACING-RULE//
+    public bool No_Spacing_FLAG;
+
 
     void Start()
     {
@@ -21,21 +23,37 @@ public class GridManager : MonoBehaviour
     public void SetNumberOfRows(int _Rows)
     {
         NumberOfRows = _Rows;
+        if (_Rows >= 5)
+        {
+            No_Spacing_FLAG = true;
+        }
     }
 
     public void SetNumberOfColumns (int _Columns)
     {
         NumberOfColumns = _Columns;
+        if (_Columns >= 5)
+        {
+            No_Spacing_FLAG = false;
+        }
     }
 
     public void GenerateCustomGrid()
     {
         RectTransform GridTransform = _Grid.GetComponent<RectTransform>();
-        _Grid.constraint = GridLayoutGroup.Constraint.FixedRowCount;
-        _Grid.constraintCount = NumberOfRows;
 
-        //Calculating the Cell Size Of The Object And Squarizing It.
-
+        //THIS IS THE TRICK TO ACHIEVE GENERIC STRUCTURE - CONSTRAINT GRID BY FIXED_ROW_COUNT OR FIX_COLUMN_COUNT - YOU NEED ONLY ONE ;)
+        _Grid.constraint = GridLayoutGroup.Constraint.FixedRowCount;///////////////////////////////////////UMER/////////////////////////
+        _Grid.constraintCount = NumberOfRows;//////////////////////////////////////////////////////////////////JAMIL////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////BUTT/////////////////
+        //TO KEEP SCREEN SPACE ENTACT YOU MUST USE A SPACING FLAG///////////////////////////////////////////////////////////////////////
+        if (No_Spacing_FLAG)
+        {
+            _Grid.spacing = new Vector2(0f, 0f);
+        }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //Calculating the Cell Size Of The Object And Squarizing It////////////////////////////////////////////////////////////////////
+        //ALWAYS GO FOR THE SMALLER SIDE WHEN SQUARIZING ANY PORT//////////////////////////////////////////////////////////////////////
         float OneDimension = GridTransform.rect.width / NumberOfColumns;
         float SecondDimension = GridTransform.rect.height / NumberOfRows;
         if (OneDimension > SecondDimension)
@@ -52,7 +70,7 @@ public class GridManager : MonoBehaviour
         );
         Debug.Log(CurrentCellSize);
         _Grid.cellSize = CurrentCellSize;
-
+        //TILE_GENERATION-STARTS///////////////////////////////////////////////////////////////////////////////////////////////////
         for (int Rows = 0; Rows < NumberOfRows; Rows++)
         {
             for (int Columns = 0; Columns < NumberOfColumns; Columns++)
@@ -71,6 +89,8 @@ public class GridManager : MonoBehaviour
                 TileTransform.anchoredPosition = new Vector2(CurrentCellSize.x * Columns, -CurrentCellSize.y * Rows);
             }
         }
+
+        GameManager.Instance.GenerateTileValues();
         //THIS IS DONE AS A PRECAUTION SO THAT NO INPUT IS VALID IS OUR CODE SIGNAL SYSTEM, IT IS AFTER GENERATION OF THE GRID, GAME PROCESSOR WILL BE REQUESTED TO BE AVAILABLE FOR COMPUTATION.//
         GameManager.Instance.StartGame();
         ////////////////////////////////////////////////////////////
@@ -86,5 +106,6 @@ public class GridManager : MonoBehaviour
             IsGridPossible = true;
         }
         return IsGridPossible;
+        //VALIDATION FUNCTION TO INVALIDATE ODD INPUTS AS PAIRS CAN ONLY BE EVEN NUMBERS BUT MULTIPLES OF NUMBERS BETWEEN 1-10 CAN BE ODD AS WELL//
     }
 }
