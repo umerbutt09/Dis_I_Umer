@@ -15,7 +15,7 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
-        InstantiateGrid();
+        GenerateCustomGrid();
     }
 
     public void SetNumberOfRows(int _Rows)
@@ -28,7 +28,7 @@ public class GridManager : MonoBehaviour
         NumberOfColumns = _Columns;
     }
 
-    public void InstantiateGrid()
+    public void GenerateCustomGrid()
     {
         RectTransform GridTransform = _Grid.GetComponent<RectTransform>();
         _Grid.constraint = GridLayoutGroup.Constraint.FixedRowCount;
@@ -57,10 +57,13 @@ public class GridManager : MonoBehaviour
         {
             for (int Columns = 0; Columns < NumberOfColumns; Columns++)
             {
-                //Instantitate The Tile Content.
+                //CREATE-TILE
                 GameObject TileObject = Instantiate(TileContent, _Grid.transform);
-                Image image = TileObject.GetComponent<Image>();
-                // Re-Anchoring Of Newly Created Object
+                //LINK-BETWEEN-GAME-MANAGER-AND-GRID-MANAGER//
+                GameManager.Instance.PlaceTile(TileObject);
+                ////////////////////////////////////////////
+                
+                // Anchoring image's rectangle transforms.
                 RectTransform TileTransform = TileObject.GetComponent<RectTransform>();
                 TileTransform.anchorMin = new Vector2(0, 1);
                 TileTransform.anchorMax = new Vector2(0, 1);
@@ -68,6 +71,9 @@ public class GridManager : MonoBehaviour
                 TileTransform.anchoredPosition = new Vector2(CurrentCellSize.x * Columns, -CurrentCellSize.y * Rows);
             }
         }
+        //THIS IS DONE AS A PRECAUTION SO THAT NO INPUT IS VALID IS OUR CODE SIGNAL SYSTEM, IT IS AFTER GENERATION OF THE GRID, GAME PROCESSOR WILL BE REQUESTED TO BE AVAILABLE FOR COMPUTATION.//
+        GameManager.Instance.StartGame();
+        ////////////////////////////////////////////////////////////
     }
 
 
