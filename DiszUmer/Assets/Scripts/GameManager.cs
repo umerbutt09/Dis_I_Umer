@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     public TilesData _TilesDataReference;
     public SlotManager _SlotManager;
 
+    public int NumberOfTries;
+    bool IsWrongMove;
+    int WrongMoveIndexA = -1;
+    int WrongMoveIndexB = -1;
 
     private void Awake()
     {
@@ -49,12 +53,16 @@ public class GameManager : MonoBehaviour
             CurrentSelectedIndex_A = _TileSerialNumber;
             CurrentSelectedValue_A = _TileValue;
             Value_A_Selected = true;
+            _TilesDataReference.TilesDataHolder[_TileSerialNumber].GetComponent<GameTile>().ToggleTileVisibility(true);
+            _TilesDataReference.TilesDataHolder[_TileSerialNumber].GetComponent<GameTile>().TurnOnSelect();
         }
         else if (!Value_B_Selected)
         {
             CurrentSelectedIndex_B = _TileSerialNumber;
             CurrentSelectedValue_B = _TileValue;
             GAME_PROCESSOR_AVAILABLE = false;
+            _TilesDataReference.TilesDataHolder[_TileSerialNumber].GetComponent<GameTile>().ToggleTileVisibility(true);
+            _TilesDataReference.TilesDataHolder[_TileSerialNumber].GetComponent<GameTile>().TurnOnSelect();
             MoveEvaluation();
         }
     }
@@ -67,25 +75,50 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            WrongMove();
-            ResetMove();
+            IsWrongMove = true;
+            WrongMove(CurrentSelectedIndex_A, CurrentSelectedIndex_B);
         }
-        
+
     }
 
-     void WrongMove ()
+     void WrongMove (int FirstIndex, int SecondIndex)
      {
         ComboMeter = 0;
+        WrongMoveIndexA = FirstIndex;
+        WrongMoveIndexB = SecondIndex;
+        _TilesDataReference.TilesDataHolder[SecondIndex].GetComponent<GameTile>().TurnOnMistake();
+        _TilesDataReference.TilesDataHolder[FirstIndex].GetComponent<GameTile>().TurnOnMistake();
+        NumberOfTries--;
         Debug.Log("Wrong Move");
+        Invoke("ResetMove", 0.45f);
+        CheckLose();
      }
+
+    void CheckLose ()
+    {
+        if (NumberOfTries <= 0)
+        {
+            Debug.Log("Lose Game");
+        }
+    }
     void ResetMove ()
     {
+        if (IsWrongMove)
+        {
+            _TilesDataReference.TilesDataHolder[WrongMoveIndexA].GetComponent<GameTile>().TurnOffSelect();
+            _TilesDataReference.TilesDataHolder[WrongMoveIndexB].GetComponent<GameTile>().TurnOffSelect();
+            _TilesDataReference.TilesDataHolder[WrongMoveIndexA].GetComponent<GameTile>().ToggleTileVisibility(false);
+            _TilesDataReference.TilesDataHolder[WrongMoveIndexB].GetComponent<GameTile>().ToggleTileVisibility(false);
+            IsWrongMove = false;
+        }
         CurrentSelectedIndex_A = -1;
         CurrentSelectedIndex_B = -1;
         CurrentSelectedValue_A = -1;
         CurrentSelectedValue_B = -2;
         Value_A_Selected = false;
         Value_B_Selected = false;
+        WrongMoveIndexA = -1;
+        WrongMoveIndexB = -1;
         RestartGameProcessor();
     }
 
@@ -138,8 +171,17 @@ public class GameManager : MonoBehaviour
 
     public void StartGame ()
     {
+        HideAllTiles();
         GAME_PROCESSOR_AVAILABLE = true;
         Debug.Log("GAME_START");
+    }
+
+    public void HideAllTiles ()
+    {
+        for (int i = 0; i < _TilesDataReference.TilesDataHolder.Count; i++)
+        {
+            _TilesDataReference.TilesDataHolder[i].GetComponent<GameTile>().ToggleTileVisibility(false);
+        }
     }
 
 }

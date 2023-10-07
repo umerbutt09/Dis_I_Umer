@@ -6,7 +6,7 @@ public class TileButton : MonoBehaviour
 {
     public int TileSerialNumber;
     public int TileValue;
-    bool CanSignal = true;
+    public bool CanSignal = true;
 
     public void PopulateSerialNumber(int _TileSerialNumber)
     {
@@ -25,7 +25,10 @@ public class TileButton : MonoBehaviour
     public void SendSelectSignal()
     {
         if (CanSignal)
-        GameManager.Instance.SelectTile(TileSerialNumber, TileValue);
+        {
+            CanSignal = false;
+            GameManager.Instance.SelectTile(TileSerialNumber, TileValue);
+        }
     }
 
 }

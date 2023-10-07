@@ -172,6 +172,7 @@ MonoBehaviour:
   CurrentSelectedValue_B: 0
   _TilesDataReference: {fileID: 270576380}
   _SlotManager: {fileID: 1078565037}
+  NumberOfTries: 3
 --- !u!114 &270576380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 290bdbe390885e84fb6240f5a53decf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NumberOfRows: 4
+  NumberOfRows: 5
   NumberOfColumns: 4
   _Grid: {fileID: 567663022}
   TileContent: {fileID: 8513152986910628932, guid: 86e701a621741cc46ad09c91061670cd, type: 3}

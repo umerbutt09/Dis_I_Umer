@@ -592,8 +592,9 @@ MonoBehaviour:
   TileValueText: {fileID: 5510199933509275368}
   TileAnimator: {fileID: 9080866796902472711}
   QuestionMark: {fileID: 557151805552541356}
-  TileSelected: 0
+  BorderImage: {fileID: 8069085404945359268}
   ButtonComponent: {fileID: 6815901556757094959}
+  Guessed: 0
 --- !u!95 &9080866796902472711
 Animator:
   serializedVersion: 5

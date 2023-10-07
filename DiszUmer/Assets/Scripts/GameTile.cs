@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameTile : MonoBehaviour
 {
     public TextMeshProUGUI TileValueText;
     public Animator TileAnimator;
     public GameObject QuestionMark;
+    public Image BorderImage;
 
     public TileButton ButtonComponent;
     public bool Guessed;
@@ -29,11 +31,11 @@ public class GameTile : MonoBehaviour
         if (State)
         {
             
-            TileAnimator.SetTrigger("ShowTile");
+            TileAnimator.SetTrigger("TileShow");
         }
         else
         {
-            TileAnimator.SetTrigger("HideTile");
+            TileAnimator.SetTrigger("TileHide");
         }
         QuestionMark.SetActive(!State);
         TileValueText.gameObject.SetActive(State);
@@ -48,6 +50,27 @@ public class GameTile : MonoBehaviour
     {
         Guessed = true;
         ButtonComponent.DisconnectSignal();
-        GetComponent<CanvasGroup>().alpha = 0.0f;
+        BorderImage.color = Color.green;
+        //GetComponent<CanvasGroup>().alpha = 0.0f;
+    }
+
+    public void TurnOffSelect ()
+    {
+        ButtonComponent.CanSignal = true;
+        BorderImage.color = Color.black;
+    }
+
+    public void TurnOnMistake ()
+    {
+        BorderImage.color = Color.red;
+    }
+    public void TurnOnSelect()
+    {
+        BorderImage.color = Color.blue;
+    }
+
+    public void MarkComplete ()
+    {
+        BorderImage.color = Color.green;
     }
 }
