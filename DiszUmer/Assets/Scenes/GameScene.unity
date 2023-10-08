@@ -853,6 +853,7 @@ MonoBehaviour:
   _TilesDataReference: {fileID: 270576380}
   _SlotManager: {fileID: 1078565037}
   TilesCanSendSignal: 0
+  LOAD_FROM_SAVE: 0
 --- !u!114 &270576380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2630,6 +2631,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194161558}
   m_CullTransparentMesh: 1
+--- !u!1 &1291514786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1291514789}
+  - component: {fileID: 1291514788}
+  m_Layer: 0
+  m_Name: LoadGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1291514788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291514786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6bd300fe569fed4b9946534429f7ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LoadGameData:
+    Rows: 0
+    Columns: 0
+    Score: 0
+    ComboCount: 0
+    Moves: 0
+    Mistakes: 0
+    NumberOfMistakesAllowed: 0
+    _SlotsData: []
+--- !u!4 &1291514789
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291514786}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1351359427
 GameObject:
   m_ObjectHideFlags: 0
@@ -4034,6 +4088,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58699c85b372d794f94af083e039b2e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _SaveGameData:
+    Rows: 0
+    Columns: 0
+    Score: 0
+    ComboCount: 0
+    Moves: 0
+    Mistakes: 0
+    NumberOfMistakesAllowed: 0
+    _SlotsData: []
 --- !u!1 &1970327519
 GameObject:
   m_ObjectHideFlags: 0

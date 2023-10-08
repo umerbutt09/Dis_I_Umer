@@ -95,10 +95,9 @@ public class GridManager : MonoBehaviour
                 TileTransform.anchoredPosition = new Vector2(CurrentCellSize.x * Columns, -CurrentCellSize.y * Rows);
             }
         }
-
-        GameManager.Instance.GenerateTileValues();
+        if (!GameManager.Instance.LOAD_FROM_SAVE)
+            GameManager.Instance.GenerateTileValues();
         //THIS IS DONE AS A PRECAUTION SO THAT NO INPUT IS VALID IS OUR CODE SIGNAL SYSTEM, IT IS AFTER GENERATION OF THE GRID, GAME PROCESSOR WILL BE REQUESTED TO BE AVAILABLE FOR COMPUTATION.//
-        //GameManager.Instance.StartGame();
         ////////////////////////////////////////////////////////////
     }
 
@@ -113,5 +112,15 @@ public class GridManager : MonoBehaviour
         }
         return IsGridPossible;
         //VALIDATION FUNCTION TO INVALIDATE ODD INPUTS AS PAIRS CAN ONLY BE EVEN NUMBERS BUT MULTIPLES OF NUMBERS BETWEEN 1-10 CAN BE ODD AS WELL//
+    }
+
+    public int GetRowNumber ()
+    {
+        return NumberOfRows;
+    }
+
+    public int GetColumnNumber ()
+    {
+        return NumberOfColumns;
     }
 }

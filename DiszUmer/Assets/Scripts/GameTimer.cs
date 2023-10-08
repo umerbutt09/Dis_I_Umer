@@ -37,8 +37,8 @@ public class GameTimer : MonoBehaviour
 
     public void ExhaustMemoryTimer ()
     {
+        GameManager.Instance.HideAllTiles();
         GameManager.Instance.StartGame();
-        UIManager.Instance.ToggleSaveAndQuitButton(true);
         Debug.Log("Memory Timer Out");
     }
 }

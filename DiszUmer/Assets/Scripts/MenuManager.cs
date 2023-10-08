@@ -68,9 +68,22 @@ public class MenuManager : MonoBehaviour
     {
         if (!TriggerFired)
         {
+            PlayerPrefs.SetInt("LoadFromSave", 0);
             PlayerPrefs.SetInt("Rows", Rows);
             PlayerPrefs.SetInt("Columns", Columns);
             PlayerPrefs.SetInt("NumberOfMistakesAllowed", NumberOfMistakesAllowed);
+            LoadingScreen.SetActive(true);
+            SceneManager.LoadSceneAsync("GameScene");
+            TriggerFired = true;
+            SoundManager.Instance.PlayClickSound();
+        }
+    }
+
+    public void ContinueGame ()
+    {
+        if (!TriggerFired)
+        {
+            PlayerPrefs.SetInt("LoadFromSave", 1);
             LoadingScreen.SetActive(true);
             SceneManager.LoadSceneAsync("GameScene");
             TriggerFired = true;
