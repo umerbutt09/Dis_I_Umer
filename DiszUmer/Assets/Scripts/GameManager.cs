@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     int CurrentSelectedIndex_B;
     bool Value_B_Selected;
     int Tile_COUNTER;
-    public int NumberOfTries;
+    int NumberOfMistakesAllowed;
     bool IsWrongMove;
     int WrongMoveIndexA = -1;
     int WrongMoveIndexB = -1;
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour
         InitializeScoreBoard();
         GridManager.Instance.GenerateCustomGrid();
         GameTimer.Instance.StartMemoryTimer();
+        NumberOfMistakesAllowed = PlayerPrefs.GetInt("NumberOfMistakesAllowed");
     }
 
     void InitializeScoreBoard()
@@ -102,8 +104,8 @@ public class GameManager : MonoBehaviour
         else
         {
             IsWrongMove = true;
-            WrongMove(CurrentSelectedIndex_A, CurrentSelectedIndex_B);
             Mistakes++;
+            WrongMove(CurrentSelectedIndex_A, CurrentSelectedIndex_B);
             UIManager.Instance.UpdateMistakesText(Mistakes);
         }
         UIManager.Instance.UpdateMovesText(Moves);
@@ -118,20 +120,29 @@ public class GameManager : MonoBehaviour
         WrongMoveIndexB = SecondIndex;
         _TilesDataReference.TilesDataHolder[SecondIndex].GetComponent<GameTile>().TurnOnMistake();
         _TilesDataReference.TilesDataHolder[FirstIndex].GetComponent<GameTile>().TurnOnMistake();
-        NumberOfTries--;
         SoundManager.Instance.PlayWrongSound();
+        if (Mistakes > NumberOfMistakesAllowed)
+        {
+            PlayerPrefs.SetInt("HasSavedGame", 0);
+            UIManager.Instance.ToggleSaveAndQuitButton(false);
+            Invoke("LoseGame", 0.45f);
+        }
+        else
+        {
+            //0.45f is the move minimum difference time basically the unit slice for game processor.
+            Invoke("ResetMove", 0.45f);
+        }
         Debug.Log("Wrong Move");
-        Invoke("ResetMove", 0.45f);
-        CheckLose();
+        
      }
 
-    void CheckLose ()
-    {
-        if (NumberOfTries <= 0)
-        {
-            Debug.Log("Lose Game");
-        }
+     public void LoseGame ()
+     {
+        Debug.Log("LOSE GAME");
+        UIManager.Instance.ActivateLoseScreen();
+        UIManager.Instance.ActivateScreenPanel();
     }
+
     void ResetMove ()
     {
         if (IsWrongMove)
@@ -176,9 +187,17 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("WIN");
+            PlayerPrefs.SetInt("HasSavedGame", 0);
+            UIManager.Instance.ToggleSaveAndQuitButton(false);
+            Invoke("Win", 0.9f);
         }
         
+    }
+
+    void Win ()
+    {
+        UIManager.Instance.ActivateWinScreen();
+        UIManager.Instance.ActivateScreenPanel();
     }
 
     void CheckForMaxComboCount()
@@ -229,6 +248,20 @@ public class GameManager : MonoBehaviour
         {
             _TilesDataReference.TilesDataHolder[i].GetComponent<GameTile>().ToggleTileVisibility(false);
         }
+    }
+
+    public void RetryGame()
+    {
+        UIManager.Instance.ActivateLoadingScreen();
+        SoundManager.Instance.PlayClickSound();
+        SceneManager.LoadSceneAsync("GameScene");
+    }
+
+    public void QuitGame ()
+    {
+        UIManager.Instance.ActivateLoadingScreen();
+        SoundManager.Instance.PlayClickSound();
+        SceneManager.LoadSceneAsync("Menu");
     }
 
 }

@@ -18,9 +18,15 @@ public class UIManager : MonoBehaviour
     [Header("Screens")]
     public GameObject WinScreen;
     public GameObject LoseScreen;
+    public GameObject ScreenPanel;
+    public GameObject LoadingScreen;
+    public GameObject UtilityPanel;
 
     [Header("MemoryTimerWidget")]
     public GameObject MemoryTimerWidget;
+
+    [Header("SaveAndQuit")]
+    public GameObject SaveAndQuitButton;
    
     private void Awake()
     {
@@ -55,13 +61,19 @@ public class UIManager : MonoBehaviour
     public void ActivateWinScreen ()
     {
         WinScreen.SetActive(true);
+        SoundManager.Instance.PlayWinSound();
     }
 
     public void ActivateLoseScreen()
     {
         LoseScreen.SetActive(true);
+        SoundManager.Instance.PlayLoseSound();
     }
 
+    public void ActivateScreenPanel()
+    {
+        ScreenPanel.SetActive(true);
+    }
     public void UpdateTimerText (int TimerCounter)
     {
         TimerText.text = TimerCounter.ToString();
@@ -70,5 +82,16 @@ public class UIManager : MonoBehaviour
     public void DisableMemoryTimerWidget ()
     {
         MemoryTimerWidget.SetActive(false);
+    }
+
+    public void ToggleSaveAndQuitButton (bool State)
+    {
+        SaveAndQuitButton.SetActive(State);
+    }
+
+    public void ActivateLoadingScreen ()
+    {
+        UtilityPanel.SetActive(false);
+        LoadingScreen.SetActive(true);
     }
 }

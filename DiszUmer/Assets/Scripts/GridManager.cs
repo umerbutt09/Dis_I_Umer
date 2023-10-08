@@ -4,8 +4,8 @@ using UnityEngine.UI;
 public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
-    public int NumberOfRows = 3; 
-    public int NumberOfColumns = 3;
+    int NumberOfRows; 
+    int NumberOfColumns;
     [Header ("Layout Element")]
     public GridLayoutGroup _Grid;
 
@@ -13,16 +13,12 @@ public class GridManager : MonoBehaviour
     public GameObject TileContent;
 
     //NO-SPACING-RULE//
-    public bool No_Spacing_FLAG;
+     bool No_Spacing_FLAG;
 
 
     private void Awake()
     {
         Instance = this;
-    }
-    void Start()
-    {
-        //GenerateCustomGrid();
     }
 
     public void SetNumberOfRows(int _Rows)
@@ -37,7 +33,7 @@ public class GridManager : MonoBehaviour
     public void SetNumberOfColumns (int _Columns)
     {
         NumberOfColumns = _Columns;
-        if (_Columns >= 5)
+        if (_Columns >= 4)
         {
             No_Spacing_FLAG = false;
         }
@@ -45,6 +41,11 @@ public class GridManager : MonoBehaviour
 
     public void GenerateCustomGrid()
     {
+        /////////////FETCHING DATA FROM USER PREFERENCES///////////////////////////////////
+        SetNumberOfRows(PlayerPrefs.GetInt("Rows"));///////////////////////////////////////
+        SetNumberOfColumns(PlayerPrefs.GetInt("Columns"));/////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////
+
         RectTransform GridTransform = _Grid.GetComponent<RectTransform>();
 
         //THIS IS THE TRICK TO ACHIEVE GENERIC STRUCTURE - CONSTRAINT GRID BY FIXED_ROW_COUNT OR FIX_COLUMN_COUNT - YOU NEED ONLY ONE ;)
