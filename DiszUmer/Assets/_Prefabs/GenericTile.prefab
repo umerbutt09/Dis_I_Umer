@@ -96,9 +96,9 @@ MonoBehaviour:
   m_fontSize: 250
   m_fontSizeBase: 250
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 100
+  m_fontSizeMax: 200
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -305,11 +305,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 130
+  m_fontSize: 100
   m_fontSizeBase: 200
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 130
+  m_fontSizeMin: 100
   m_fontSizeMax: 200
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -497,6 +497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileSerialNumber: 0
   TileValue: 0
+  CanSignal: 1
 --- !u!1 &8513152986910628932
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
+    public static GridManager Instance;
     public int NumberOfRows = 3; 
     public int NumberOfColumns = 3;
     [Header ("Layout Element")]
@@ -15,9 +16,13 @@ public class GridManager : MonoBehaviour
     public bool No_Spacing_FLAG;
 
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
-        GenerateCustomGrid();
+        //GenerateCustomGrid();
     }
 
     public void SetNumberOfRows(int _Rows)
@@ -92,7 +97,7 @@ public class GridManager : MonoBehaviour
 
         GameManager.Instance.GenerateTileValues();
         //THIS IS DONE AS A PRECAUTION SO THAT NO INPUT IS VALID IS OUR CODE SIGNAL SYSTEM, IT IS AFTER GENERATION OF THE GRID, GAME PROCESSOR WILL BE REQUESTED TO BE AVAILABLE FOR COMPUTATION.//
-        GameManager.Instance.StartGame();
+        //GameManager.Instance.StartGame();
         ////////////////////////////////////////////////////////////
     }
 

@@ -24,10 +24,13 @@ public class TileButton : MonoBehaviour
 
     public void SendSelectSignal()
     {
-        if (CanSignal)
+        if (GameManager.Instance.TilesCanSendSignal)
         {
-            CanSignal = false;
-            GameManager.Instance.SelectTile(TileSerialNumber, TileValue);
+            if (CanSignal)
+            {
+                CanSignal = false;
+                GameManager.Instance.SelectTile(TileSerialNumber, TileValue);
+            }
         }
     }
 

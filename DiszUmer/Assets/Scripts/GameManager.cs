@@ -6,32 +6,54 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    //GAME VARIABLES
     public int CurrentSelectedValue_A;
     bool Value_A_Selected;
     int CurrentSelectedIndex_A;
     public int CurrentSelectedValue_B;
     int CurrentSelectedIndex_B;
     bool Value_B_Selected;
-
     int Tile_COUNTER;
-
-    int ComboMeter;
-    int MaxComboMeter;
-    int Score;
-
-    bool GAME_PROCESSOR_AVAILABLE = false;
-
-    public TilesData _TilesDataReference;
-    public SlotManager _SlotManager;
-
     public int NumberOfTries;
     bool IsWrongMove;
     int WrongMoveIndexA = -1;
     int WrongMoveIndexB = -1;
+    bool GAME_PROCESSOR_AVAILABLE = false;
+
+
+    //SCORE VARIABLES
+    int Score = 0;
+    int ComboCount = 0;
+    int MaxComboCount = 0;
+    int Moves = 0;
+    int Mistakes = 0;
+
+    public TilesData _TilesDataReference;
+    public SlotManager _SlotManager;
+    public bool TilesCanSendSignal;
+
+   
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        InitializeScoreBoard();
+        GridManager.Instance.GenerateCustomGrid();
+        GameTimer.Instance.StartMemoryTimer();
+    }
+
+    void InitializeScoreBoard()
+    {
+        UIManager.Instance.UpdateScoreText(Score);
+        UIManager.Instance.UpdateComboText(ComboCount);
+        MaxComboCount = PlayerPrefs.GetInt("MaxComboCount");
+        UIManager.Instance.UpdateMaxComboText(MaxComboCount);
+        UIManager.Instance.UpdateMovesText(Moves);
+        UIManager.Instance.UpdateMistakesText(Mistakes);
     }
 
     public void SelectTile (int _TileSerialNumber, int _TileValue)
@@ -42,6 +64,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("GAME PROCESSOR IS " + GAME_PROCESSOR_AVAILABLE);
         if (GAME_PROCESSOR_AVAILABLE)
         {
+            
             GameCoreLogic(_TileSerialNumber, _TileValue);
         }
     }
@@ -55,6 +78,8 @@ public class GameManager : MonoBehaviour
             Value_A_Selected = true;
             _TilesDataReference.TilesDataHolder[_TileSerialNumber].GetComponent<GameTile>().ToggleTileVisibility(true);
             _TilesDataReference.TilesDataHolder[_TileSerialNumber].GetComponent<GameTile>().TurnOnSelect();
+            SoundManager.Instance.PlayClickSound();
+
         }
         else if (!Value_B_Selected)
         {
@@ -69,6 +94,7 @@ public class GameManager : MonoBehaviour
 
     public void MoveEvaluation ()
     {
+        Moves++;
         if (CurrentSelectedValue_A == CurrentSelectedValue_B)
         {
             MarkComplete(CurrentSelectedIndex_A, CurrentSelectedIndex_B);
@@ -77,18 +103,23 @@ public class GameManager : MonoBehaviour
         {
             IsWrongMove = true;
             WrongMove(CurrentSelectedIndex_A, CurrentSelectedIndex_B);
+            Mistakes++;
+            UIManager.Instance.UpdateMistakesText(Mistakes);
         }
+        UIManager.Instance.UpdateMovesText(Moves);
 
     }
 
      void WrongMove (int FirstIndex, int SecondIndex)
      {
-        ComboMeter = 0;
+        ComboCount = 0;
+        UIManager.Instance.UpdateComboText(ComboCount);
         WrongMoveIndexA = FirstIndex;
         WrongMoveIndexB = SecondIndex;
         _TilesDataReference.TilesDataHolder[SecondIndex].GetComponent<GameTile>().TurnOnMistake();
         _TilesDataReference.TilesDataHolder[FirstIndex].GetComponent<GameTile>().TurnOnMistake();
         NumberOfTries--;
+        SoundManager.Instance.PlayWrongSound();
         Debug.Log("Wrong Move");
         Invoke("ResetMove", 0.45f);
         CheckLose();
@@ -133,8 +164,12 @@ public class GameManager : MonoBehaviour
         Debug.Log("MARK COMPLETE INDEX " + SecondIndex);
         _TilesDataReference.TilesDataHolder[FirstIndex].GetComponent<GameTile>().TurnOff();
         _TilesDataReference.TilesDataHolder[SecondIndex].GetComponent<GameTile>().TurnOff();
-        Score++;
-        ComboMeter++;
+        Score = Score + 10 + (10 * ComboCount);
+        ComboCount++;
+        UIManager.Instance.UpdateScoreText(Score);
+        UIManager.Instance.UpdateComboText(ComboCount);
+        CheckForMaxComboCount();
+        SoundManager.Instance.PlayCorrectSound();
         if (!CheckWin())
         {
             ResetMove();
@@ -144,6 +179,16 @@ public class GameManager : MonoBehaviour
             Debug.Log("WIN");
         }
         
+    }
+
+    void CheckForMaxComboCount()
+    {
+        int MaxComboCount = PlayerPrefs.GetInt("MaxComboCount");
+        if (ComboCount > MaxComboCount)
+        {
+            PlayerPrefs.SetInt("MaxComboCount", ComboCount);
+            UIManager.Instance.UpdateMaxComboText(ComboCount);
+        }
     }
 
     bool CheckWin ()
@@ -173,6 +218,8 @@ public class GameManager : MonoBehaviour
     {
         HideAllTiles();
         GAME_PROCESSOR_AVAILABLE = true;
+        TilesCanSendSignal = true;
+        UIManager.Instance.DisableMemoryTimerWidget();
         Debug.Log("GAME_START");
     }
 
